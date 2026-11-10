@@ -9,11 +9,11 @@ Two hands-on ClickHouse Cloud investigations, written as support case notes: cla
 | Case | What I investigated | Evidence and outcome |
 | --- | --- | --- |
 | [CH-001 — INSERT retries without additional rows](cases/CH-001.md) | Does a successful retry imply new data was stored? | Reproduced a duplicate batch; `system.part_log` recorded `INSERT_WAS_DEDUPLICATED` (389). Distinct new data still inserted. [Screenshots](evidence/README.md) |
-| [CH-002 — `LIMIT 10` reads too much data](cases/CH-002.md) | Why does an event-filtered query read far more than ten rows? | `EXPLAIN` showed 61/61 granules selected. A separate table ordered by event type first selected 1/61 granules and read **97.1% fewer rows**, returning the same ten events. [Reproduction SQL](sql/CH-002.sql) · [Evidence register](evidence/ch002/README.md) |
+| [CH-002 — `LIMIT 10` reads too much data](cases/CH-002.md) | Why does an event-filtered query read far more than ten rows? | `EXPLAIN` showed 61/61 granules selected. A separate table ordered by event type first selected 1/61 granules and read **97.1% fewer rows**, returning the same ten events. [Reproduction SQL](sql/CH-002.sql) · [Screenshots](evidence/ch002/README.md) |
 
-### CH-002 in 30 seconds
+### CH-002 — what changed
 
-The test dataset had **500,000 synthetic events**. The original sort key, `(event_time, hostname)`, did not let ClickHouse prune granules for `WHERE event_id = 4625`. A separately created comparison table, ordered by `(event_id, event_time, hostname)`, changed that.
+The test dataset had **500,000 synthetic events**. The source table was sorted by time: `(event_time, hostname)`. But the query searched by event type (`WHERE event_id = 4625`). We tested the same data in a separate table sorted by `(event_id, event_time, hostname)`, so ClickHouse could find the matching records with less reading.
 
 | Measured field | Original | Comparison |
 | --- | ---: | ---: |
@@ -24,7 +24,7 @@ The test dataset had **500,000 synthetic events**. The original sort key, `(even
 | Duration, one execution | 7 ms | 4 ms |
 | Result tuples | 10 | 10, independently matched |
 
-**Interpretation:** meaningful reduction in work performed by this one query. Both queries were already fast; a single 7 ms versus 4 ms observation does **not** establish a production latency improvement. Changing a sort key could hurt other workloads, so this is a comparison, not an unconditional production recommendation.
+**What this means:** the tested query did much less reading. Both queries were already fast; a single 7 ms versus 4 ms observation does **not** establish a production latency improvement. Changing a sort key could hurt other workloads, so this is a comparison, not an unconditional production recommendation.
 
 ## Working environment and approach
 
@@ -37,13 +37,13 @@ The investigations use `DESCRIBE TABLE`, `system.tables`, `EXPLAIN indexes = 1`,
 
 ## Reproduce or review
 
-Start with the [CH-002 case](cases/CH-002.md) for the problem statement, results, customer response, and decision-making. The [SQL script](sql/CH-002.sql) is commented and designed for a disposable lab; review any DDL before running. **CH-002 screenshots are prepared but not yet uploaded to GitHub**; the [register](evidence/ch002/README.md) states exactly which captures exist. All [CH-001 screenshots](evidence/) are hosted.
+Start with the [CH-002 case](cases/CH-002.md) for the problem statement, results, customer response, and decision-making. The [SQL script](sql/CH-002.sql) is commented and designed for a disposable lab; review any DDL before running. **All ten CH-002 screenshots are uploaded** to the [CH-002 evidence folder](evidence/ch002/) and indexed in its [evidence guide](evidence/ch002/README.md). The [CH-001 screenshots](evidence/) are also available.
 
-The work does **not** establish production DBA/SRE experience, workload-wide optimization, a network outage simulation, or real ClickHouse support tickets. I haven't tested query performance under concurrent load or measured repeat-run latency distributions.
+These tests are not proof of production database administration or support-queue experience. They also do not test high traffic, system outages, or repeat-run performance.
 
 ## What I'd do with a real ticket
 
-Start with impact and affected query IDs, confirm the customer has authorized inspection, and collect sanitized SQL and representative workload patterns. Prefer read-only diagnostics and a separate controlled test. Propose a production change only after reviewing competing query patterns, ingestion rate, downtime/migration risks, and rollback. Keep the customer informed with findings and uncertainty; escalate with clear reproduction steps and correlated logs if the results contradict expected behavior.
+I'd first ask what is affected and how seriously, then request the query and relevant logs without collecting sensitive customer data. I'd inspect the existing setup before changing anything and test a proposed fix separately. Before any production change, I'd check its impact on other queries and prepare a rollback plan. I'd keep the customer informed and escalate with clear evidence if needed.
 
 ---
 
