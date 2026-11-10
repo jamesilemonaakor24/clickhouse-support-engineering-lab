@@ -1,21 +1,23 @@
-# CH-001 — Screenshot evidence inventory
+# CH-001 — Screenshot evidence
 
-These images were captured from the real ClickHouse Cloud SQL Console used for a **synthetic support simulation**. Images have been cropped to exclude personal/browser navigation information and preserve query/results. The settings image is a **clearly labeled composite of two separate scroll positions**, not a single original screen.
+These screenshots come from the personal ClickHouse Cloud lab. The settings image combines two separate scroll positions and is labeled as a composite.
 
-**Upload status:** All 11 screenshots are uploaded to this evidence folder. The filename references below correspond to actual PNG files.
+| No. | File | What it supports |
+| --- | --- | --- |
+| 01 | [01-database-discovery.png](01-database-discovery.png) | Database list includes `support_lab` |
+| 02 | [02-storage-engine-sharedmergetree.png](02-storage-engine-sharedmergetree.png) | Original `windows_security_events` table: `SharedMergeTree`, time/host/event sorting key |
+| 03 | [03-insert-settings.png](03-insert-settings.png) | Session INSERT settings (composite of two views) |
+| 04 | [04-test-table-created.png](04-test-table-created.png) | Disposable `insert_retry_test` table created |
+| 05 | [05-original-batch-verified.png](05-original-batch-verified.png) | Two original records returned |
+| 06 | [06-retry-insert-succeeded.png](06-retry-insert-succeeded.png) | Identical INSERT acknowledged |
+| 07 | [07-row-count-unchanged.png](07-row-count-unchanged.png) | Count remained two |
+| 08 | [08-deduplication-part-log.png](08-deduplication-part-log.png) | `system.part_log`: code `389` for duplicate and code `0` for earlier write |
+| 09 | [09-new-batch-verified.png](09-new-batch-verified.png) | New batch raised total to three records |
+| 10 | [10-clickhouse-version.png](10-clickhouse-version.png) | `SELECT version()` reported `26.6.1.2455` |
+| 11 | [11-cloud-azure-region.png](11-cloud-azure-region.png) | Azure Germany West Central shown in service setup |
 
-| Filename | Observation supported |
-| --- | --- |
-| [01-database-discovery.png](01-database-discovery.png) | `SHOW DATABASES` lists the available databases |
-| [02-storage-engine-sharedmergetree.png](02-storage-engine-sharedmergetree.png) | `system.tables` reports **`windows_security_events`** as `SharedMergeTree`, sorting key `event_time, hostname, event_id`; this is **not** a test-table engine verification |
-| [03-insert-settings.png](03-insert-settings.png) | Four SQL-session settings from two separately captured scroll positions; values and `changed` flags |
-| [03-test-table-created.png](03-test-table-created.png) | Isolated `insert_retry_test` table creation succeeded |
-| [04-original-batch-verified.png](04-original-batch-verified.png) | Two original test records read back |
-| [05-retry-insert-succeeded.png](05-retry-insert-succeeded.png) | Repeated identical INSERT was acknowledged |
-| [06-row-count-unchanged.png](06-row-count-unchanged.png) | Count stayed at 2 |
-| [07-deduplication-part-log.png](07-deduplication-part-log.png) | `system.part_log` code 389; the full error-name text is clipped by the console view. `errorCodeToName(error)` was executed and the code is the decisive reproducible indicator |
-| [08-new-batch-verified.png](08-new-batch-verified.png) | Distinct INSERT resulted in 3 rows |
-| [09-clickhouse-version.png](09-clickhouse-version.png) | `SELECT version()` returned `26.6.1.2455` |
-| [10-cloud-azure-region.png](10-cloud-azure-region.png) | Service setup selected Azure Germany West Central |
+**Outstanding evidence:** A screenshot of the test table's original zero-row baseline was not captured and cannot be reconstructed by querying the populated table. Screenshots of the original events table's six-row count and column definitions are also missing; these can be checked again. Test-table engine and asynchronous INSERT-log checks remain unperformed.
 
-For interview review, prioritize **02, 03, 06, 07, and 08**, alongside the written [CH-001 case](../cases/CH-001.md). **No screenshot establishes that `insert_retry_test` used `SharedMergeTree`, or that the INSERT traversed an async buffer.** Those checks are pending.
+**Screenshot 08 crop:** The hosted screenshot is the earlier crop with the second result row partly cut off. A corrected crop showing both complete rows has been prepared from the original 10 November 2026 screenshot, but **has not yet replaced this file on GitHub**. No missing pixels were invented.
+
+[Read the CH-001 investigation](../cases/CH-001.md).
