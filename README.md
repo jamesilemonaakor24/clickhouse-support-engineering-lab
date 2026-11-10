@@ -33,7 +33,7 @@ This portfolio focuses on a support engineer's workflow: **acknowledge → scope
 
 Results in the case report were observed in my own ClickHouse Cloud lab. The **customer complaint and communication are fictional support simulations**, inspired by a publicly documented ClickHouse issue. No actual customer support case, production outage, or engineering escalation occurred.
 
-Cropped screenshots are available in the reviewer evidence packet and documented in the [evidence inventory](evidence/README.md). **The PNG files have not yet been uploaded to GitHub**, so no screenshot links are claimed as available.
+All 11 cropped screenshots have been uploaded to the [evidence folder](evidence/) and linked from the [CH-001 case report](cases/CH-001.md). The captures show observed SQL outputs, with unrelated browser/account UI removed.
 
 **Reference:** [ClickHouse engineering: Getting started with ClickHouse? 13 mistakes and how to avoid them](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse).
 
