@@ -1,22 +1,20 @@
-# CH-002 — Evidence register
+# CH-002 — Screenshots
 
-**Status:** The ten cropped screenshots are prepared, but **they have not been uploaded to this GitHub folder**. The filenames below describe the files in the separately provided CH-002 evidence ZIP, not links to currently hosted GitHub images. Do not treat the inventory as proof that a screenshot is online.
+These ten screenshots were captured during the ClickHouse Cloud test on 10 November 2026. They are now stored **in this folder**. The images are cropped to focus on queries and their results; no numbers were added or reconstructed.
 
-The crops exclude the browser URL, account sidebar, and unrelated navigation. They preserve the SQL console query/results portions. These are crops of the original session, not generated mockups.
-
-| Prepared filename | What it shows |
+| Screenshot | What to check |
 | --- | --- |
-| `01-source-table-schema.jpg` | Three-column schema for the generated dataset |
-| `02-original-query-read.jpg` | Baseline query and console read statistics |
-| `03-original-explain-61-61.jpg` | Original EXPLAIN selecting 61/61 granules |
-| `04-baseline-query-log.jpg` | Baseline rows/bytes/time/memory from the query log |
-| `05-optimized-table-created.jpg` | Separate sorted comparison table creation |
-| `06-data-counts-match.jpg` | Both tables contain 500,000 rows and 17 failed-login events |
-| `07-optimized-explain-1-61.jpg` | Optimized primary key selecting 1/61 granules |
-| `08-optimized-query-read.jpg` | Optimized query and console read statistics |
-| `09-optimized-query-log.jpg` | Optimized rows/bytes/time/memory from the query log |
-| `10-results-match.jpg` | Exact ten-tuple multiset comparison returns `results_match = 1` |
+| [01 — Table schema](01-source-table-schema.jpg) | `event_time`, `hostname`, `event_id` and their types |
+| [02 — Original query](02-original-query-read.jpg) | Ten results; console reports 581,920 rows read |
+| [03 — Original EXPLAIN](03-original-explain-61-61.jpg) | `Condition: true`, `Granules: 61/61` |
+| [04 — Original query log](04-baseline-query-log.jpg) | Logged duration, rows read, bytes read and memory |
+| [05 — Comparison table](05-optimized-table-created.jpg) | Successful creation with alternative sort order |
+| [06 — Record checks](06-data-counts-match.jpg) | 500,000 total and 17 failed-login events in each table |
+| [07 — Optimized EXPLAIN](07-optimized-explain-1-61.jpg) | `Condition` on `event_id`, `Granules: 1/61` |
+| [08 — Optimized query](08-optimized-query-read.jpg) | Ten results; console reports 16,960 rows read |
+| [09 — Optimized query log](09-optimized-query-log.jpg) | Logged resource measurements for optimized query |
+| [10 — Result validation](10-results-match.jpg) | `original_rows = 10`, `optimized_rows = 10`, `results_match = 1` |
 
-The full evidence chain and limitations are documented in [CH-002](../../cases/CH-002.md). In particular, the **7 ms / 4 ms figures are single-run measurements**, not a rigorous latency benchmark. Original data are synthetic. Screenshot evidence should be uploaded only after inspecting the crops for accuracy and confidentiality.
+**How to interpret the evidence:** We observed fewer index granules selected and fewer rows read. The 7 ms and 4 ms times come from one execution each, so this is not a statistically tested latency improvement. The experiment used synthetic data and an isolated comparison table.
 
-When uploading these files, put them **directly inside `evidence/ch002/`**, not in a second nested `evidence/` folder.
+[Back to the case report](../../cases/CH-002.md).
