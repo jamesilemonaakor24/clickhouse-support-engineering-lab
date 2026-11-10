@@ -37,7 +37,7 @@ The investigations use `DESCRIBE TABLE`, `system.tables`, `EXPLAIN indexes = 1`,
 
 ## Reproduce or review
 
-Start with the [CH-002 case](cases/CH-002.md) for the problem statement, results, customer response, and decision-making. The [SQL script](sql/CH-002.sql) is commented and designed for a disposable lab; review any DDL before running. **All ten CH-002 screenshots are uploaded** to the [CH-002 evidence folder](evidence/ch002/) and indexed in its [evidence guide](evidence/ch002/README.md). The [CH-001 screenshots](evidence/) are also available.
+Start with the [CH-002 case](cases/CH-002.md) for the problem statement, results, customer response, and decision-making. The [SQL script](sql/CH-002.sql) is commented and designed for a disposable lab; review any DDL before running. **All ten CH-002 screenshots are uploaded** to the [CH-002 evidence folder](evidence/ch002/) and indexed in its [evidence guide](evidence/ch002/README.md). The [CH-001 screenshots](evidence/) and [CH-001 reproduction SQL](sql/CH-001.sql) are also available.
 
 These tests are not proof of production database administration or support-queue experience. They also do not test high traffic, system outages, or repeat-run performance.
 
