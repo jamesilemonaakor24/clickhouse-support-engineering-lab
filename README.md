@@ -6,9 +6,9 @@ This portfolio focuses on a support engineer's workflow: **acknowledge → scope
 
 ## Environment
 
-- **Platform:** ClickHouse Cloud on Microsoft Azure (Germany West Central)
-- **Database version observed:** `26.6.1.2455`
-- **Storage engine observed:** `SharedMergeTree` for a table created with `MergeTree()`
+- **Platform:** ClickHouse Cloud on Microsoft Azure (Germany West Central), confirmed from the provisioning settings shown during setup
+- **Database version observed:** `26.6.1.2455` (`SELECT version()`); original console evidence available
+- **Storage engine observed:** `SharedMergeTree` on the originally inspected `windows_security_events` table; the separate reproduction table's engine has not been independently checked
 - **Dataset:** Small, wholly synthetic Windows-style security events
 - **Access:** Personal lab environment; no actual customer data, systems, tickets or ClickHouse internal tools
 
@@ -33,7 +33,7 @@ This portfolio focuses on a support engineer's workflow: **acknowledge → scope
 
 Results in the case report were observed in my own ClickHouse Cloud lab. The **customer complaint and communication are fictional support simulations**, inspired by a publicly documented ClickHouse issue. No actual customer support case, production outage, or engineering escalation occurred.
 
-Cropped screenshots have been prepared and documented in the [evidence inventory](evidence/README.md). The PNG files are **not yet uploaded to GitHub**, so no screenshot links are claimed as available.
+Cropped screenshots are available in the reviewer evidence packet and documented in the [evidence inventory](evidence/README.md). **The PNG files have not yet been uploaded to GitHub**, so no screenshot links are claimed as available.
 
 **Reference:** [ClickHouse engineering: Getting started with ClickHouse? 13 mistakes and how to avoid them](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse).
 
